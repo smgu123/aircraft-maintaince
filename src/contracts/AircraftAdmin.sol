@@ -1,12 +1,10 @@
 
 pragma solidity >=0.4.21 <0.7.0;  
-pragma experimental ABIEncoderV2;
 
 contract AircraftAdmin{
 
 mapping(address => Admin) public Admins;     
 mapping(address=> mapping(address=>uint)) public AdminTomaintainer;       
-
 
 struct Admin{
 

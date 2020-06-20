@@ -67,7 +67,7 @@ function grantAccessToAdmin(address _id) public {
         Admin memory d = Admins[_id];
 
         // uint pos= p.doctorList.push(_docterId);
-        p.admin[maintainerCount] = _id;
+        adminList[msg.sender].push(_id);
         maintainerToAdmin[msg.sender][_id] = maintainerCount;
         d.maintainer[maintainerCount] = msg.sender;
         maintainerCount = maintainerCount+1;
@@ -85,9 +85,9 @@ function grantAccessToAdmin(address _id) public {
       return  (p.name,p.age,p.id,p.file);
     }
 
-function getFileInfomaintainer(address _id, bytes32 _fileHashId) public view returns (string memory name, uint8 age){
-            maintainer memory f = getinfomaintaince();
-        return(f.name,f.age);
+function getFileInfomaintainer(address _id, bytes32 _fileHashId) public view returns (string memory name, uint8 age,address id,bytes32 _file,address[] memory _list){
+            (string memory  __name ,uint8 __age,address __id,bytes32 __file) = getinfomaintaince();
+        return(__name,__age,__id,__file,adminList[msg.sender]);
      }
 
 }
