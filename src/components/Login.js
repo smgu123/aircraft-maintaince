@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './CSS/todo.css'
 import {NavBar} from 'react-bootstrap';
 import ReactBootstrap from 'react-bootstrap';
-
+import NavigationBar from './NavigationBar';
 
 
 class Login extends Component {
@@ -10,24 +10,19 @@ class Login extends Component {
         super(props)
 
         this.state = {
-            firstName: "",
-            lastName: "",
+            Username: "",
             password: "",
-            gender: "",
-
+            web3 : "",
+            aircraftContract : "" 
 
         }
         this.handleSubmit=this.handleSubmit.bind(this)
     }
 
-    firsthandler = (event) => {
+   
+    Usernamehandler = (event) => {
         this.setState({
-            firstName: event.target.value
-        })
-    }
-    lasthandler = (event) => {
-        this.setState({
-            lastName: event.target.value
+            Username: event.target.value
         })
     }
     passwordhandler = (event) => {
@@ -36,36 +31,32 @@ class Login extends Component {
         })
     }
 
-    genderhandler = (event) => {
-        this.setState({
-            gender: event.target.value
-        })
-    }
 
-    handleSubmit = (event) => {
-        alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
-        console.log(this.state);
-        this.setState({
-            firstName: "",
-            lastName: "",
-            password: '',
-            gender: "",
-        })
-     event.preventDefault()
-        
+    handleSubmit = async (event) => {
+        let web3 = this.props.web3;
+        let aircraftContract = this.props.contract;
+      let accounts= await web3.eth.getAccounts()
+      console.log("account"+accounts[0])
+      
+      if(this.state.role == "Maintainer"){
+          let txn = await aircraftContract.methods.maintainersignup(this.state.Username,this.state.password).send({"from":accounts[0]});
+          
+          if(txn)
+              window.alert("registered successfully as maintainer");
+          else
+            window.alert("registered unsuccessfull");
+      }
     }
     
-
-
     render() {
         return (
-            <div>
-                 
+            <center><div>
+              
 
                 <form onSubmit={this.handleSubmit}>
                     <h1>LOGIN</h1>
                    
-                    <label>Username :</label> <input type="text" value={this.state.lastName} onChange={this.lasthandler} placeholder="Username" /><br />
+                    <label>Username :</label> <input type="text" value={this.state.Username} onChange={this.Usernamehandler} placeholder="Username" /><br />
                     <label>Password :</label> <input type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
                     
                     <input type="submit" value="Submit" />
@@ -73,6 +64,8 @@ class Login extends Component {
 
             </div>
             
+            </center>
+           
         )
     }
 }

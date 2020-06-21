@@ -23,7 +23,7 @@ const Styles = styled.div`
   .form-center {
     position: absolute !important;
     left: 25%;
-    right: 25%;
+    right: 55%;
   }
 `;
 export const NavigationBar = () => (
@@ -34,7 +34,7 @@ export const NavigationBar = () => (
      
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ml-auto">
-          <Nav.Item><Link href="./Maintainer">Maintainer</Link></Nav.Item> 
+          <Nav.Item><Nav.Link href="/Maintainer">Maintainer</Nav.Link></Nav.Item> 
           <Nav.Item><Nav.Link href="/Admin">Admin</Nav.Link></Nav.Item>
           <Nav.Item><Nav.Link href="/Login">LOgin</Nav.Link></Nav.Item>
         </Nav>

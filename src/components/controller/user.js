@@ -5,7 +5,7 @@ const register = async (accountaddress,username, password)=> {
     console.log("first");
     return new Promise((resolve, reject) => {
         console.log("second");
-        const db = "mongodb://https:localhost:27017/Maintainer";
+        const db = "mongodb://localhost:27017/Maintainer";
         mongo.connect(db,{useNewUrlParser:true, useCreateIndex: true, useFindAndModify: true, useUnifiedTopology: true })
         .then(async ()=>{
             console.log("Database Connected!!");
@@ -24,7 +24,7 @@ const register = async (accountaddress,username, password)=> {
 const login = (username, password) => {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise( async (resolve,reject) => {
-       const db = "mongodb://https:localhost:27017/Maintainer";
+       const db = "mongodb://localhost:27017/Maintainer";
        mongo.connect(db,{useNewUrlParser:true, useCreateIndex: true, useFindAndModify: true, useUnifiedTopology: true })
        .then(async ()=>{
            console.log("Database Connected!!")

@@ -18,7 +18,7 @@ struct maintainer{
        
   }
 
-   function signup( string memory _name, uint8 _age  ) public {
+   function maintainersignup( string memory _name, uint8 _age  ) public {
 
   maintainers[msg.sender] = maintainer({name : _name, age : _age,id:msg.sender,file : ""});
    

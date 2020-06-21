@@ -13,7 +13,7 @@ struct Admin{
     address[] maintainer;     
   }
 
-   function signup( string memory _name) public {
+   function Adminsignup( string memory _name) public {
 
   Admins[msg.sender] = Admin({name : _name, id:msg.sender,maintainer : new address[](0)});
    

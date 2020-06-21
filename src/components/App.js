@@ -5,7 +5,6 @@ import './App.css';
 // import { Admin } from './Admin';
 
 
-
 import Web3 from 'web3';
 // import './node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Switch,HashRouter } from "react-router-dom";
@@ -102,19 +101,10 @@ state = {
            <NavigationBar />
           </Router>
           </React.Fragment>
-          <Router>
-          <HashRouter>
-          <React.Suspense fallback={loading()}>
-    <Switch>
-    <Route exact path="/Maintainer" name="Login Page" component={Maintainer}  />
-              <Route exact path="/Admin" name="Register Page" render={props => <Admin {...props}/>} />
-  {/* <Route path="/Login" component={Login} /> */}
-
-</Switch>
-</React.Suspense>
-      </HashRouter>
-    </Router>
-    <Form />
+         
+         
+    <Form web3 = {this.state.web3} contract = {this.state.aircraftContract}/>
+    {/* <Login web3 = {this.state.web3} contract = {this.state.aircraftContract}/> */}
     
       </div>
     );
