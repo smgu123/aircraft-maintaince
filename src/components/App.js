@@ -26,54 +26,57 @@ state = {
   aircraftContract : "" 
 }
 
-  async componentWillMount(){
-    await this.loadweb3()
-    await this.loadBlockchainData()
-   
-   }
-
-  async loadweb3(){
-
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-   
-          // Request account access if needed
-          await window.ethereum.enable();
-     
-  }
-  // Legacy dapp browsers...
-  else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider);
-      // Acccounts always exposed
-      this.setState({web3:window.web3})
-  }
-
-  // Non-dapp browsers...
-  else {
-      console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
-  }
-  }
-
-  async loadBlockchainData(){
-    let web3= window.web3;
-
-    let accounts= await web3.eth.getAccounts()
-    console.log(accounts)
-      this.setState({
-        account1:accounts[0],
-        account2:accounts[1]
-      })
+async componentWillMount(){
+  await this.loadweb3()
+  await this.loadBlockchainData()
  
-      let networkId= await web3.eth.net.getId()
-      console.log("network id"+networkId)
-      let networkDataAircraft=Aircraft.networks[networkId]
-      if(networkDataAircraft){
-        console.log(networkId)
-        let aircraft=web3.eth.Contract(Aircraft.abi,networkDataAircraft.address)
-        console.log(networkDataAircraft.address)
-        this.setState({aircraftContract : aircraft})
-      }
+ }
+
+async loadweb3(){
+
+  if (window.ethereum) {
+    window.web3 = new Web3(window.ethereum);
+ 
+        // Request account access if needed
+        await window.ethereum.enable();
+   
+}
+// Legacy dapp browsers...
+else if (window.web3) {
+    window.web3 = new Web3(window.web3.currentProvider);
+    // Acccounts always exposed
+    this.setState({web3:window.web3})
+}
+
+// Non-dapp browsers...
+else {
+    console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+}
+}
+
+async loadBlockchainData(){
+  let web3= window.web3;
+
+  let accounts= await web3.eth.getAccounts()
+  console.log(accounts)
+    this.setState({
+      account1:accounts[0],
+      account2:accounts[1]
+    })
+
+    let networkId= await web3.eth.net.getId()
+    console.log("network id"+networkId)
+    let networkDataAircraft=Aircraft.networks[networkId]
+    console.log(networkDataAircraft)
+    if(networkDataAircraft){
+      // console.log(Aircraft.abi)
+      let aircraft=web3.eth.Contract(Aircraft.abi,networkDataAircraft.address)
+
+
+      // aircraftVariable=aircraft
+      // console.log("ASsas"+this.Aircraft)
     }
+  }
 
     async registermaintainer(type) {
       let { healthRecord, web3 } = this.state;

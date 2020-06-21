@@ -6,13 +6,18 @@ import Maintainer from './Maintainer';
 import './CSS/form.css'
 import axios from 'axios';
 import Web3 from 'web3';
+import Aircraft from '../abis/Aircraft.json'
 
 
 class Form extends Component {
     constructor(props) {
         super(props)
+        this.Aircraft=''
+        this.handleSubmit=this.handleSubmit.bind(this)
 
-        this.state = {
+    }
+
+        state = {
             // web3 : "",
             aircraftContract : "" ,
             Accountaddress: "",
@@ -21,9 +26,60 @@ class Form extends Component {
             role: ""
 
         }
-        this.handleSubmit=this.handleSubmit.bind(this)
-    }
+   
 
+    async componentWillMount(){
+        await this.loadweb3()
+        await this.loadBlockchainData()
+       
+       }
+    
+      async loadweb3(){
+    
+        if (window.ethereum) {
+          window.web3 = new Web3(window.ethereum);
+       
+              // Request account access if needed
+              await window.ethereum.enable();
+         
+      }
+      // Legacy dapp browsers...
+      else if (window.web3) {
+          window.web3 = new Web3(window.web3.currentProvider);
+          // Acccounts always exposed
+          this.setState({web3:window.web3})
+      }
+    
+      // Non-dapp browsers...
+      else {
+          console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+      }
+      }
+    
+      async loadBlockchainData(){
+        let web3= window.web3;
+    
+        let accounts= await web3.eth.getAccounts()
+        console.log(accounts)
+          this.setState({
+            account1:accounts[0],
+            account2:accounts[1]
+          })
+     
+          let networkId= await web3.eth.net.getId()
+          console.log("network id"+networkId)
+          let networkDataAircraft=Aircraft.networks[networkId]
+          console.log(networkDataAircraft)
+          if(networkDataAircraft){
+            console.log(Aircraft.abi)
+            let aircraft=web3.eth.Contract(Aircraft.abi,networkDataAircraft.address)
+    
+    
+            this.Aircraft=aircraft
+            console.log("ASsas"+this.Aircraft)
+          }
+        }
+    
     Accountaddresshandler = (event) => {
         console.log("accountaddresshandler");
         this.setState({
@@ -52,21 +108,37 @@ class Form extends Component {
 
     handleSubmit = async (event) => {
         // let web3 = this.props.web3;
-        console.log("account1");
-        let aircraftContract = this.props.contract;
-        console.log("account2");
+        let web3= window.web3;
+    
+        let accounts= await web3.eth.getAccounts()
+        console.log(accounts)
+          this.setState({
+            account1:accounts[0],
+            account2:accounts[1]
+          })
+     
+          let networkId= await web3.eth.net.getId()
+          console.log("network id"+networkId)
+          let networkDataAircraft=Aircraft.networks[networkId]
+          console.log(networkDataAircraft)
+          let aircraft;
+          if(networkDataAircraft){
+            console.log(Aircraft.abi)
+            aircraft=web3.eth.Contract(Aircraft.abi,networkDataAircraft.address)
+          }
+       
         let Accountaddress = this.state.Accountaddress;
         console.log("account3");
         let Username = this.state.Username;
         let password = this.state.password;
-       let web3 = new Web3(window.web3.currentProvider);
-      let accounts= await web3.eth.getAccounts() ;
+       
      
-      console.log("account"+this.state.role+typeof(this.state.role))
+      console.log("Sdasd"+this.Aircraft)
       
       if(this.state.role == "Maintainer"){
-          console.log("m1");
-          let txn = await aircraftContract.methods.maintainersignup(this.state.Accountaddress,this.state.Username).send({"from":accounts[0]});
+       
+
+          let txn = await aircraft.methods.maintainersignup(this.state.Accountaddress,this.state.Username).send({"from":accounts[0]});
           
           if(txn){
               window.alert("registered successfully as maintainer");
@@ -84,7 +156,7 @@ class Form extends Component {
             window.alert("registered unsuccessfull");
 
             if(this.state.role == "Admin"){
-                let txn = await aircraftContract.methods.Adminsignup(this.state.Accountaddress,this.state.Username).send({"from":accounts[0]});
+                let txn = await aircraft.methods.Adminsignup(this.state.Accountaddress,this.state.Username).send({"from":accounts[0]});
                 
                 if(txn)
                     window.alert("registered successfully as maintainer");
