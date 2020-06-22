@@ -5,7 +5,7 @@ contract Aircraftmaintainer{
 
 mapping(address => maintainer) public maintainers;     
 mapping(address=> mapping(address=>uint)) public maintainerToAdmin;      
-mapping(address=> bytes32) public maintainerToFile;      
+mapping(address=> string) public maintainerToFile;      
 mapping(address=> address[]) public adminList;
 
 
@@ -14,7 +14,7 @@ struct maintainer{
     string name;       
     uint8 age;         
     address id;
-    bytes32 file;     
+    string file;     
        
   }
 
@@ -24,7 +24,7 @@ struct maintainer{
    
   }  
 
-  function getinfomaintaince() public view returns(string memory _name, uint8 _age , address id, bytes32 __file ){
+  function getinfomaintaince() public view returns(string memory _name, uint8 _age , address id, string memory __file ){
      maintainer memory m = maintainers [msg.sender];
      return(m.name,m.age,m.id,m.file);
       
